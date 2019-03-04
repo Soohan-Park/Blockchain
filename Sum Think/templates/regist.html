@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <title>Sum Think</title>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/css/bootstrap.min.css" integrity="sha384-Smlep5jCw/wG7hdkwQ/Z5nLIefveQRIY9nfy6xoR1uRYBtpZgI6339F5dgvm/e9B" crossorigin="anonymous">
+  </head>
+  <body>
+    <h1>REGIST</h1>
+    <br><br><br>
+    <!-- regist ID & PWD & GENDER & AGE -->
+    <form action="/registing" method="POST" name="registform">
+        <div class="form-group">
+            <label for="">ID</label>
+            <input type="email"
+                class="form-control" name="registID" id="registID" aria-describedby="helpId" placeholder="이메일을 입력">
+            
+        </div>
+        <div class="form-group">
+            <label for="">PWD</label>
+            <input type="password" class="form-control" name="registPWD" id="registPWD" aria-describedby="helpId" placeholder="8자리 이상">
+        </div>
+        <div class="form-group">
+            <label for="">GENDER</label>
+            <select class="form-control form-control-{3:sm|lg}" name="registGENDER" id="registGENDER">
+                <option>남성</option>
+                <option>여성</option>
+            </select>
+        </div>
+        <div class="form-group">
+                <label for="">AGE</label>
+                <select class="form-control form-control-{3:sm|lg}" name="registAGE" id="registAGE">
+                    <option>10대</option>
+                    <option>20대</option>
+                    <option>30대</option>
+                    <option>40대</option>
+                    <option>50대 이상</option>
+                </select>
+        </div>
+    </form>
+    <br>
+    <!-- BTN -->
+    <center>
+    <a href="#" class="btn btn-primary btn-lg active" role="button" aria-pressed="true" onclick="regist_check()">가입</a>
+    <a href="/" class="btn btn-secondary btn-lg active" role="button" aria-pressed="true">취소</a>
+    </center>
+
+    <!-- Optional JavaScript -->
+    <script>
+        function regist_check() {
+            if (registform.registID.value == "") {
+                alert("이메일을 입력해주세요!");
+                registform.registID.focus();
+                return;
+            }
+            else if (registform.registPWD.value == "") {
+                alert("비밀번호를 입력해주세요!");
+                registform.registPWD.focus();
+                return;
+            }
+            else {
+                registform.submit();
+            }
+        }
+    </script>
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/js/bootstrap.min.js" integrity="sha384-o+RDsa0aLu++PJvFqy8fFScvbHFLtbvScb8AjopnFD+iEQ7wo/CG0xlczd+2O/em" crossorigin="anonymous"></script>
+  </body>
+</html>

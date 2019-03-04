@@ -1,0 +1,136 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <title>Sum Think</title>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/css/bootstrap.min.css" integrity="sha384-Smlep5jCw/wG7hdkwQ/Z5nLIefveQRIY9nfy6xoR1uRYBtpZgI6339F5dgvm/e9B" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.1/css/all.css" integrity="sha384-O8whS3fhG2OnA5Kas0Y9l3cfpmYjapjI0E4theH4iuMD+pLhbf6JI0jIMfYcK3yZ" crossorigin="anonymous">
+  </head>
+  <body>
+    <!-- 상단 바 -->
+    <nav class="navbar navbar-expand-md navbar-light bg-light">
+        <a href="/feed"><img src="https://i.imgur.com/NJeWK8h.png" class="img-fluid rounded-left" alt="Sum Think"></a>
+        <!-- 메뉴 버튼 -->
+        <button class="navbar-toggler hidden-lg-up" type="button" data-toggle="collapse" data-target="#collapsibleNavId" aria-controls="collapsibleNavId"
+            aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <!-- 메뉴들 -->
+        <div class="collapse navbar-collapse" id="collapsibleNavId">
+            <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+                <!-- 검색 부분 -->
+                <form class="form-inline my-2 my-lg-0" action="/search" method="POST" id="searchform" name="searchform">
+                    <input class="form-control mr-lg-2" type="text" placeholder="Search survey..">
+                    <button class="btn btn-outline-primary my-2 my-sm-0" type="submit">Search</button>
+                </form>
+                <!-- 약간의 여백 -->
+                <li> </li>
+                <!-- 활성화 -->
+                <li class="nav-item">
+                    <a class="nav-link" href="/feed">FEED</a>
+                </li>
+                <!-- 드롭다운 메뉴 -->
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="dropdownId" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">SURVEY</a>
+                    <div class="dropdown-menu" aria-labelledby="dropdownId">
+                        <a class="dropdown-item" href="/regist_survey">REGIST SURVEY</a>
+                        <a class="dropdown-item active" href="/participated_survey">PARTICIPATED SURVEY <span class="sr-only">(current)</span></a>
+                    </div>
+                </li>
+                <!-- 일반 메뉴 -->
+                <li class="nav-item">
+                    <a class="nav-link" href="/wallet">WALLET</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/mypage">MY PAGE</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/logout">LOGOUT</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <div>
+        <h1 class="display-4">{{sv['survey_title']}}</h1>
+    </div>
+    <br>
+    <p class="font-weight-light text-right" style="color: lightgray;"><i>{{sv['register']}}&nbsp;</i></p>
+    <br><br>
+    <!-- 세부설정 카드 -->
+    <div class="list-group">
+        <a href="#" class="list-group-item list-group-item-action flex-column align-items-start">
+            <div class="d-flex w-100 justify-content-between">
+                <h5 class="card-title mt-2 font-weight-light"><i>Detail</i></h5>
+            </div>
+            <div class="d-flex w-100 justify-content-between">
+                <p class="mb-2 mt-3 font-weight-light">최대 참여 인원 수</p>
+                <p class="mb-2 mt-3">{{sv['max_people']}}명</p>
+            </div>
+            <div class="d-flex w-100 justify-content-between">
+                <p class="mb-2 font-weight-light">분배 방식</p>
+                <p class="mb-2">{{sv['type_reward']}}</p>
+            </div>
+            <div class="d-flex w-100 justify-content-between">
+                <p class="mb-2 font-weight-light">보상 금액</p>
+                <p class="mb-2">{{perReward}} <i class="fab fa-viacoin fa-sm fa-fw"></i></p>
+            </div>
+            <div class="d-flex w-100 justify-content-between">
+                <p class="mb-2 font-weight-light">마감일</p>
+                <p class="mb-2">{{sv['max_date']}}</p>
+            </div>
+        </a>
+    </div>
+    <br><br><br>
+    <!-- 설문 정보 카드 (PUB) -->
+    <form action="/block" method="POST" id="answerform" name="answerform">
+        <div class="form-group">
+            <label for=""><q>{{sv['survey_q1']}}</q></label>
+            <input type="text"
+            class="form-control" name="survey_a1" id="survey_a1" aria-describedby="helpId" placeholder="답변">
+        </div>
+        <div class="form-group">
+            <label for=""><q>{{sv['survey_q2']}}</q></label>
+            <input type="text"
+            class="form-control" name="survey_a2" id="survey_a2" aria-describedby="helpId" placeholder="답변">
+        </div>
+        <div class="form-group">
+            <label for=""><q>{{sv['survey_q3']}}</q></label>
+            <input type="text"
+            class="form-control" name="survey_a3" id="survey_a3" aria-describedby="helpId" placeholder="답변">
+        </div>
+        <!-- 아래의 정보들로 해당 설문을 찾아서, 위의 답변들을 블록 저장. -->
+        <input type="hidden" name="svTitle" value="{{sv['survey_title']}}">
+        <input type="hidden" name="svRegister" value="{{sv['register']}}">
+        <input type="hidden" name="svDate" value="{{sv['max_date']}}">
+        <!-- 블록으로 들어가므로!! -->
+        <input type="hidden" name="tx_type" value="3">
+        <!-- 설문 참여비 -->
+        <input type="hidden" name="reward" value="{{perReward}}">
+    </form>
+    <br>
+    
+    <!-- 설문 참여 버튼 -->
+    <center>
+        <a name="participateBtn" id="participateBtn" class="btn btn-primary" onclick="registAnswer()" role="button" style="color: white;">답변 등록</a>
+        <br><br>
+        <a name="participateBtn" id="participateBtn" class="btn btn-secondary btn-sm" onclick="script:history.back();" role="button" style="color: white;">뒤로</a>
+    </center>
+    <br><br>
+    <!-- Optional JavaScript -->
+    <script>
+        function registAnswer() {
+            answerform.submit();
+            return;
+        }
+    </script>
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/js/bootstrap.min.js" integrity="sha384-o+RDsa0aLu++PJvFqy8fFScvbHFLtbvScb8AjopnFD+iEQ7wo/CG0xlczd+2O/em" crossorigin="anonymous"></script>
+  </body>
+</html>

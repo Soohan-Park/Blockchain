@@ -1,0 +1,198 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <title>Sum Think</title>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/css/bootstrap.min.css" integrity="sha384-Smlep5jCw/wG7hdkwQ/Z5nLIefveQRIY9nfy6xoR1uRYBtpZgI6339F5dgvm/e9B" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.1/css/all.css" integrity="sha384-O8whS3fhG2OnA5Kas0Y9l3cfpmYjapjI0E4theH4iuMD+pLhbf6JI0jIMfYcK3yZ" crossorigin="anonymous">
+  </head>
+  <body>
+    <!-- 상단 바 -->
+    <nav class="navbar navbar-expand-md navbar-light bg-light">
+        <a href="/feed"><img src="https://i.imgur.com/NJeWK8h.png" class="img-fluid rounded-left" alt="Sum Think"></a>
+        <!-- 메뉴 버튼 -->
+        <button class="navbar-toggler hidden-lg-up" type="button" data-toggle="collapse" data-target="#collapsibleNavId" aria-controls="collapsibleNavId"
+            aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <!-- 메뉴들 -->
+        <div class="collapse navbar-collapse" id="collapsibleNavId">
+            <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+                <!-- 검색 부분 -->
+                <form class="form-inline my-2 my-lg-0" action="/search" method="POST" id="searchform" name="searchform">
+                    <input class="form-control mr-lg-2" type="text" placeholder="Search survey..">
+                    <button class="btn btn-outline-primary my-2 my-sm-0" type="submit">Search</button>
+                </form>
+                <!-- 약간의 여백 -->
+                <li> </li>
+                <!-- 활성화 -->
+                <li class="nav-item">
+                    <a class="nav-link" href="/feed">FEED</a>
+                </li>
+                <!-- 드롭다운 메뉴 -->
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="dropdownId" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">SURVEY</a>
+                    <div class="dropdown-menu" aria-labelledby="dropdownId">
+                        <a class="dropdown-item" href="/regist_survey">REGIST SURVEY</a>
+                        <a class="dropdown-item" href="/participated_survey">PARTICIPATED SURVEY</a>
+                    </div>
+                </li>
+                <!-- 일반 메뉴 -->
+                <li class="nav-item active">
+                    <a class="nav-link" href="#">WALLET <span class="sr-only">(current)</span></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/mypage">MY PAGE</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/logout">LOGOUT</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <div>
+        <h1 class="display-4">Wallet</h1>
+    </div>
+    <br><br>
+    <!-- 잔액 부분 및 주소 -->
+    <div class="row">
+        <div class="col-md">
+            <h4 class="text-left">&nbsp;Balance</h4>
+            <blockquote class="blockquote text-right btn-lg">
+                <cite title="My Balance">
+                    <a href="#" class="badge badge-primary badge-pill font-weight-light">{{wallet_addr}}</a>
+                </cite>
+            </blockquote>
+        </div>
+    </div>
+    <br>
+    <!-- 잔액 표기 및 보내기 -->
+    <div>
+        <div>
+            <div id="accordianId" role="tablist" aria-multiselectable="true">
+                <div class="card">
+                    <div class="card-header text-center" role="tab" id="section1HeaderId">
+                            <a data-toggle="collapse" data-parent="#accordianId" href="#section1ContentId" aria-expanded="true" aria-controls="section1ContentId">
+                                <h3 class="card-title text-center" style="color: black;"><u>{{bal}}</u> <i class="fab fa-viacoin fa-sm fa-fw"></i></h3>
+                            </a>
+                    </div>
+                    <div id="section1ContentId" class="collapse in" role="tabpanel" aria-labelledby="section1HeaderId">
+                        <div class="card-body text-center">
+                            <!-- Button trigger modal -->
+                            <button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#sendbtn">
+                                보내기
+                            </button>
+                            <!-- Trigger of Modal End -->
+                            <!-- Modal -->
+                            <div class="modal fade" id="sendbtn" tabindex="-1" role="dialog" aria-labelledby="modelTitleId" aria-hidden="true">
+                                <div class="modal-dialog modal-sm|lg" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h4 class="modal-title" id="modelTitleId"><i class="fab fa-viacoin fa-md fa-fw"></i> 전송</h4>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <!-- 전송할 정보 입력 | 자바스크립트 사용 -->
+                                            <form action="/block" id="send_token_form" name="send_token_form" method="POST">
+                                                <input type="hidden" name="tx_type" value="1">
+                                                <div class="form-group">
+                                                    <small id="helpId" class="form-text text-muted text-left">받는 사람</small>
+                                                    <input type="text"
+                                                    class="form-control form-control-sm|lg" name="recipient" id="recipient" aria-describedby="helpId" placeholder="주소">
+                                                </div>
+                                                <div class="form-group">
+                                                        <small id="helpId" class="form-text text-muted text-left">수량</small>
+                                                        <input type="number"
+                                                        class="form-control form-control-sm|lg" name="amount" id="amount" aria-describedby="helpId" placeholder="0.0 SV">
+                                                </div>
+                                            </form>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">취소</button>
+                                            <button type="button" class="btn btn-primary" onclick="send_token()">보내기</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Modal End -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <br><br>
+    <!-- 전송 내역 -->
+    <table class="table" style="text-align: center;">
+        <thead>
+            <tr>
+                <th>Sender</th>
+                <th>Receiver</th>
+                <th>Amount</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for tx in txList %}
+            <tr>
+                <!-- 시간을 누르면 해당 트랜잭션 조회 페이지로 이동 : 트랜잭션 조회 페이지도 제작을해야한다. ㅠ-->
+                <td scope="row" >{{tx['sender'][:7]}}..</td>
+                <td>{{tx['recipient'][:7]}}..</td>
+                <!-- amount에 링크를 걸어서 블록 조회 가능토록 -->
+                <form action="/tx" method="POST" id="see_tx" name="see_tx">
+                    <td><button style="background-color: white; border: none; color: cornflowerblue; padding: 2px 6px; text-align: center; text-decoration: none; display: inline-block; font-size: 15px; " onclick="gototx()">{{tx['amount']}}</button></td>
+                    <input type="hidden" name="see_tx_data_sender" value="{{tx['sender']}}">
+                    <input type="hidden" name="see_tx_data_recipient" value="{{tx['recipient']}}">
+                    <input type="hidden" name="see_tx_data_amount" value="{{tx['amount']}}">
+                </form>
+            </tr>
+            {% endfor %}
+            <!-- 아래는 밑줄을 채우기 위한 여백  -->
+            <tr>
+                <td scope="row"></td>
+                <td></td>
+                <td></td>
+            </tr>
+        </tbody>
+    </table>
+    <br>
+
+    <!-- Optional JavaScript -->
+    <script>
+        function send_token() {
+            // 비어있는거 체크하고
+            if (send_token_form.recipient.value == "") {
+                alert("받는 사람의 주소를 입력해주세요!");
+                send_token_form.recipient.focus();
+                return;
+            }
+            else if (send_token_form.amount.value == "") {
+                alert("보낼 수량을 입력해주세요!");
+                send_token_form.amount.focus();
+                return;
+            }
+            //submit!
+            else {
+                alert('전송 완료!');
+                send_token_form.submit();
+                return;
+            }
+        }
+
+        function gototx() {
+            see_tx.submit();
+            return;
+        }
+    </script>
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/js/bootstrap.min.js" integrity="sha384-o+RDsa0aLu++PJvFqy8fFScvbHFLtbvScb8AjopnFD+iEQ7wo/CG0xlczd+2O/em" crossorigin="anonymous"></script>
+  </body>
+</html>

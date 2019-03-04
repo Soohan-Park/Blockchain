@@ -1,0 +1,173 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <title>Sum Think</title>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/css/bootstrap.min.css" integrity="sha384-Smlep5jCw/wG7hdkwQ/Z5nLIefveQRIY9nfy6xoR1uRYBtpZgI6339F5dgvm/e9B" crossorigin="anonymous">
+  </head>
+  <body>
+    <!-- 상단 바 -->
+    <nav class="navbar navbar-expand-md navbar-light bg-light">
+        <a href="/feed"><img src="https://i.imgur.com/NJeWK8h.png" class="img-fluid rounded-left" alt="Sum Think"></a>
+        <!-- 메뉴 버튼 -->
+        <button class="navbar-toggler hidden-lg-up" type="button" data-toggle="collapse" data-target="#collapsibleNavId" aria-controls="collapsibleNavId"
+            aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <!-- 메뉴들 -->
+        <div class="collapse navbar-collapse" id="collapsibleNavId">
+            <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+                <!-- 검색 부분 -->
+                <form class="form-inline my-2 my-lg-0" action="/search" method="POST" id="searchform" name="searchform">
+                    <input class="form-control mr-lg-2" type="text" placeholder="Search survey..">
+                    <button class="btn btn-outline-primary my-2 my-sm-0" type="submit">Search</button>
+                </form>
+                <!-- 약간의 여백 -->
+                <li> </li>
+                <!-- 활성화 -->
+                <li class="nav-item">
+                    <a class="nav-link" href="/feed">FEED</a>
+                </li>
+                <!-- 드롭다운 메뉴 -->
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="dropdownId" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">SURVEY</a>
+                    <div class="dropdown-menu" aria-labelledby="dropdownId">
+                        <a class="dropdown-item active" href="/regist_survey">REGIST SURVEY <span class="sr-only">(current)</span></a>
+                        <a class="dropdown-item" href="/participated_survey">PARTICIPATED SURVEY</a>
+                    </div>
+                </li>
+                <!-- 일반 메뉴 -->
+                <li class="nav-item">
+                    <a class="nav-link" href="/wallet">WALLET</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/mypage">MY PAGE</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/logout">LOGOUT</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <div>
+        <h1 class="display-4">REGIST PUBLIC SURVEY</h1>
+    </div>
+    <br><br>
+
+    <!-- 설문 등록지 -->
+    <form action="/block" method="POST" id="registSurvey" name="registSurvey">
+        <input type="hidden" name="tx_type" value="2">
+        <div class="form-group">
+        <label for="">설문 제목</label>
+        <input type="text"
+            class="form-control form-control-lg" name="surveyTitle" id="surveyTitle" aria-describedby="helpId" placeholder="설문 제목">
+        </div>
+
+        <div class="form-group">
+        <label for="">설문1</label>
+        <input type="text"
+            class="form-control form-control-lg" name="surveyQ1" id="surveyQ1" aria-describedby="helpId" placeholder="설문1">
+        </div>
+
+        <div class="form-group">
+        <label for="">설문2</label>
+        <input type="text"
+            class="form-control form-control-lg" name="surveyQ2" id="surveyQ2" aria-describedby="helpId" placeholder="설문2">
+        </div>
+
+        <div class="form-group">
+        <label for="">설문3</label>
+        <input type="text"
+            class="form-control form-control-lg" name="surveyQ3" id="surveyQ3" aria-describedby="helpId" placeholder="설문3">
+        </div>
+        <br>
+        <div id="accordianId" role="tablist" aria-multiselectable="true">
+            <div class="card">
+                <div class="card-header text-center" role="tab" id="section1HeaderId">
+                    <h5 class="mb-0">
+                        <a data-toggle="collapse" data-parent="#accordianId" href="#section1ContentId" aria-expanded="true" aria-controls="section1ContentId">
+                            세부 설정
+                        </a>
+                    </h5>
+                </div>
+                <div id="section1ContentId" class="collapse in" role="tabpanel" aria-labelledby="section1HeaderId">
+                    <div class="card-body">
+                        <!-- 아코디언 바디 -->
+                        <!-- 인원수 보상방식 참여기간 총 코인 베팅 -->
+                        <div class="form-group">
+                            <label for="">참여 제한 인원수</label>
+                            <input type="number" name="maxPeople" id="maxPeople" class="form-control" placeholder="참여 제한 인원 수" aria-describedby="helpId">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="">보상 방식</label>
+                            <select multiple class="form-control form-control-{2:sm}" name="typeReward" id="typeReward">
+                                <option >균등 분배</option>
+                                <option>추첨</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="">참여 가능 기간</label>
+                            <input type="date" name="maxDate" id="maxDate" class="form-control" placeholder="" aria-describedby="helpId">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="">설문 등록 분배비</label>
+                            <input type="number" name="totalReward" id="totalReward" class="form-control" placeholder="설문 등록 분배비" aria-describedby="helpId">
+                        </div>
+                        <!-- 바디 끝 -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+    <!-- 설문 등록지 끝 -->
+    <br><br>
+    <center>
+        <a name="gotoregist" id="gotoregist" class="btn btn-primary btn-lg" role="button" onclick="registsurvey()" style="color: white;">등록</a>
+    </center>
+    <br><br>
+    <!-- Optional JavaScript -->
+    <script>
+        function registsurvey() {
+            if (registSurvey.surveyTitle.value == '') {
+                alert("설문 제목을 입력해주세요!");
+                registSurvey.surveyTitle.focus();
+                return;
+            }
+            else if (registSurvey.surveyQ1.value == '') {
+                alert("최소 1개 이상의 설문을 등록하여 주세요!");
+                registSurvey.surveyQ1.focus();
+                return;
+            }
+            else if (registSurvey.maxPeople.value == '') {
+                alert("최대 참여 인원 수를 반드시 설정해 주세요!");
+                registSurvey.maxPeople.focus();
+                return;
+            }
+            else if (registSurvey.totalReward.value == '') {
+                alert("설문 등록 분배비를 입력해주세요!");
+                registSurvey.totalReward.focus();
+                return;
+            }
+            else if (registSurvey.totalReward.value < registSurvey.maxPeople.value * 0.1) {
+                alert("1인당 최소 0.1 SV 이상의 코인을 등록하여야 합니다!");
+                registSurvey.totalReward.focus();
+                return;
+            }
+            registSurvey.submit();
+            return;
+        }
+    </script>
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/js/bootstrap.min.js" integrity="sha384-o+RDsa0aLu++PJvFqy8fFScvbHFLtbvScb8AjopnFD+iEQ7wo/CG0xlczd+2O/em" crossorigin="anonymous"></script>
+  </body>
+</html>

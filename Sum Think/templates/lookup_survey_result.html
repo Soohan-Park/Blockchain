@@ -1,0 +1,177 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <title>Sum Think</title>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <!-- vGraph CSS -->
+    <link rel="stylesheet" type="text/css" href="http://naradesign.net/ouif/uio/graph/vertical/vGraph.css"/>
+  </head>
+  <body>
+    <!-- 상단 바 -->
+    <nav class="navbar navbar-expand-md navbar-light bg-light">
+        <a href="/feed"><img src="https://i.imgur.com/NJeWK8h.png" class="img-fluid rounded-left" alt="Sum Think"></a>
+        <!-- 메뉴 버튼 -->
+        <button class="navbar-toggler hidden-lg-up" type="button" data-toggle="collapse" data-target="#collapsibleNavId" aria-controls="collapsibleNavId"
+            aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <!-- 메뉴들 -->
+        <div class="collapse navbar-collapse" id="collapsibleNavId">
+            <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+                <!-- 검색 부분 -->
+                <form class="form-inline my-2 my-lg-0" action="/search" method="POST" id="searchform" name="searchform">
+                    <input class="form-control mr-lg-2" type="text" placeholder="Search survey..">
+                    <button class="btn btn-outline-primary my-2 my-sm-0" type="submit">Search</button>
+                </form>
+                <!-- 약간의 여백 -->
+                <li> </li>
+                <!-- 활성화 -->
+                <li class="nav-item">
+                    <a class="nav-link" href="/feed">FEED</a>
+                </li>
+                <!-- 드롭다운 메뉴 -->
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="dropdownId" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">SURVEY</a>
+                    <div class="dropdown-menu" aria-labelledby="dropdownId">
+                        <a class="dropdown-item" href="/regist_survey">REGIST SURVEY</a>
+                        <a class="dropdown-item active" href="/participated_survey">PARTICIPATED SURVEY <span class="sr-only">(current)</span></a>
+                    </div>
+                </li>
+                <!-- 일반 메뉴 -->
+                <li class="nav-item">
+                    <a class="nav-link" href="/wallet">WALLET</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/mypage">MY PAGE</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/logout">LOGOUT</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <div>
+        <h1 class="display-4">SURVEY RESULT</h1>
+    </div>
+    <br><br>
+    <h4 class="font-weight-bold"><q>{{sv['survey_title']}}</q></h4><br>
+    <p class="font-weight-light text-right" style="color: lightgray;"><i>{{sv['register']}}&nbsp;</i></p>
+
+    <!-- 세부설정 카드 -->
+    <div class="list-group">
+        <a href="#" class="list-group-item list-group-item-action flex-column align-items-start">
+            <div class="d-flex w-100 justify-content-between">
+                <h5 class="card-title mt-2 font-weight-light"><i>Detail</i></h5>
+            </div>
+            <div class="d-flex w-100 justify-content-between">
+                <p class="mb-2 mt-3 font-weight-light">최대 참여 인원 수</p>
+                <p class="mb-2 mt-3">{{sv['max_people']}}명</p>
+            </div>
+            <div class="d-flex w-100 justify-content-between">
+                <p class="mb-2 font-weight-light">분배 방식</p>
+                <p class="mb-2">{{sv['type_reward']}}</p>
+            </div>
+            <div class="d-flex w-100 justify-content-between">
+                <p class="mb-2 font-weight-light">보상 금액</p>
+                <p class="mb-2">{{perReward}} <i class="fab fa-viacoin fa-sm fa-fw"></i></p>
+            </div>
+            <div class="d-flex w-100 justify-content-between">
+                <p class="mb-2 font-weight-light">마감일</p>
+                <p class="mb-2">{{sv['max_date']}}</p>
+            </div>
+        </a>
+    </div>
+    <br><br><br>
+
+    <!-- 각 질문에 대한 통계 출력 -->
+    <div class="card-deck">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title font-weight-light"><i>{{sv['survey_q1']}}</i></h5>
+                <!-- 표 -->
+                <div class="vGraph">
+                    <ul>
+                        {% for key in result1 %}
+                        {% if key == '' %}
+                        {% else %}
+                        <li><span class="gTerm">{{key}}</span><span class="gBar" style="height: {{result1[key]}}%"><span>{{result1[key]}}%</span></span></li>
+                        {% endif %}
+                        {% endfor %}
+                    </ul>
+                </div>
+                <!-- 표 end -->
+            </div>
+        </div>
+        <br>
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title font-weight-light"><i>{{sv['survey_q2']}}</i></h5>
+                <!-- 표 -->
+                <div class="vGraph">
+                    <ul>
+                        {% for key in result2 %}
+                        {% if key == '' %}
+                        {% else %}
+                        <li><span class="gTerm">{{key}}</span><span class="gBar" style="height: {{result2[key]}}%"><span>{{result2[key]}}%</span></span></li>
+                        {% endif %}
+                        {% endfor %}
+                    </ul>
+                </div>
+                <!-- 표 end -->
+            </div>
+        </div>
+        <br>
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title font-weight-light"><i>{{sv['survey_q3']}}</i></h5>
+                <!-- 표 -->
+                <div class="vGraph">
+                    <ul>
+                        {% for key in result3 %}
+                        {% if key == '' %}
+                        {% else %}
+                        <li><span class="gTerm">{{key}}</span><span class="gBar" style="height: {{result3[key]}}%"><span>{{result3[key]}}%</span></span></li>
+                        {% endif %}
+                        {% endfor %}
+                    </ul>
+                </div>
+                <!-- 표 end -->
+            </div>
+        </div>
+    </div>
+    <br><br>
+    
+
+    <!-- 표 -->
+    <!-- <h1>Vertical Bar Graph</h1>
+    <br>
+    <div class="vGraph">
+        <ul>
+            <li><span class="gTerm">SUN</span><span class="gBar" style="height:{{변수지정}}%"><span>{{변수지정}}%</span></span></li>
+            <li><span class="gTerm">MON</span><span class="gBar" style="height:20%"><span>20%</span></span></li>
+            <li><span class="gTerm">TUE</span><span class="gBar" style="height:30%"><span>30%</span></span></li>
+            <li><span class="gTerm">WED</span><span class="gBar" style="height:40%"><span>40%</span></span></li>
+            <li><span class="gTerm">THU</span><span class="gBar" style="height:50%"><span>50%</span></span></li>
+            <li><span class="gTerm">FRI</span><span class="gBar" style="height:60%"><span>60%</span></span></li>
+            <li><span class="gTerm">SAT</span><span class="gBar" style="height:90%"><span>100%</span></span></li>
+        </ul>
+    </div> -->
+
+    <!-- 뒤로가기 버튼 -->
+    <center>
+        <a name="backBtn" id="backBtn" class="btn btn-secondary btn-lg" onclick="script:history.back();" role="button" style="color: white;">뒤로</a>
+    </center>
+    <br><br>
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+  </body>
+</html>

@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <title>Sum Think</title>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/css/bootstrap.min.css" integrity="sha384-Smlep5jCw/wG7hdkwQ/Z5nLIefveQRIY9nfy6xoR1uRYBtpZgI6339F5dgvm/e9B" crossorigin="anonymous">
+  </head>
+  <body>
+    <!-- 상단 바 -->
+    <nav class="navbar navbar-expand-md navbar-light bg-light">
+        <a href="/feed"><img src="https://i.imgur.com/NJeWK8h.png" class="img-fluid rounded-left" alt="Sum Think"></a>
+        <!-- 메뉴 버튼 -->
+        <button class="navbar-toggler hidden-lg-up" type="button" data-toggle="collapse" data-target="#collapsibleNavId" aria-controls="collapsibleNavId"
+            aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <!-- 메뉴들 -->
+        <div class="collapse navbar-collapse" id="collapsibleNavId">
+            <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+                <!-- 검색 부분 -->
+                <form class="form-inline my-2 my-lg-0" action="/search" method="POST" id="searchform" name="searchform">
+                    <input class="form-control mr-lg-2" type="text" placeholder="Search survey..">
+                    <button class="btn btn-outline-primary my-2 my-sm-0" type="submit">Search</button>
+                </form>
+                <!-- 약간의 여백 -->
+                <li> </li>
+                <!-- 활성화 -->
+                <li class="nav-item">
+                    <a class="nav-link" href="/feed">FEED</a>
+                </li>
+                <!-- 드롭다운 메뉴 -->
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="dropdownId" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">SURVEY</a>
+                    <div class="dropdown-menu" aria-labelledby="dropdownId">
+                        <a class="dropdown-item active" href="#">REGIST SURVEY <span class="sr-only">(current)</span></a>
+                        <a class="dropdown-item" href="/participated_survey">PARTICIPATED SURVEY</a>
+                    </div>
+                </li>
+                <!-- 일반 메뉴 -->
+                <li class="nav-item">
+                    <a class="nav-link" href="/wallet">WALLET</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/mypage">MY PAGE</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/logout">LOGOUT</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <div>
+        <h1 class="display-4">REGIST SURVEY</h1>
+    </div>
+    <br><br><br>
+
+    <!-- 바디 본문 -->
+    <div class="list-group">
+        <!-- 링크 걸어주기 -->
+        <a href="#" class="list-group-item list-group-item-action flex-column align-items-start" style="background-color: lightskyblue;">
+            <div class="d-flex w-100 justify-content-between">
+                <h2 class="mb-1" style="color: black;">Regist Public Survey</h2>
+            </div>
+        </a>
+        <a href="/regist_survey_pri" class="list-group-item list-group-item-action flex-column align-items-start">
+            <div class="d-flex w-100 justify-content-between">
+                <h2 class="mb-1">Regist Private Survey</h2>
+            </div>
+        </a>
+    </div>
+    <br><br>
+    <center>
+        <a name="makeSV" id="makeSV" class="btn btn-primary btn-lg" href="/regist_survey/public" role="button">설문 만들기</a>
+    </center>
+    <br><br>
+    <!-- 전송 내역 -->
+    <table class="table" style="text-align: center;">
+        <thead>
+            <tr>
+                <th>Register</th>
+                <th>Title</th>
+                <th>Date End</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for sv in svList %}
+            <tr>
+                <!-- 글자 줄이기 위해 7자만 출력 -->
+                <td scope="row" >{{sv['register'][:7]}}..</td>
+                <td>{{sv['surveyTitle'][:7]}}..</td>
+                <form action="/lookup_survey" method="POST" id="svform" name="svform">
+                    <td><button style="background-color: white; border: none; color: cornflowerblue; padding: 2px 6px; text-align: center; text-decoration: none; display: inline-block; font-size: 15px; " onclick="gotosv()">{{sv['maxDate']}}</button></td>
+                    <input type="hidden" name="svRegister" value="{{sv['register']}}">
+                    <input type="hidden" name="svTitle" value="{{sv['surveyTitle']}}">
+                    <input type="hidden" name="svDate" value="{{sv['maxDate']}}">
+                    <!-- 퍼블릭인지 프라이빗인지 확인하기 위해 -->
+                    <input type="hidden" name="svType" value="PUB">
+                </form>
+            </tr>
+            {% endfor %}
+            <!-- 아래는 밑줄을 채우기 위한 여백  -->
+            <tr>
+                <td scope="row"></td>
+                <td></td>
+                <td></td>
+            </tr>
+        </tbody>
+    </table>
+    <br>
+    <!-- Optional JavaScript -->
+    <script>
+        function gotosv() {
+            svform.submit();
+            return;
+        }
+    </script>
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/js/bootstrap.min.js" integrity="sha384-o+RDsa0aLu++PJvFqy8fFScvbHFLtbvScb8AjopnFD+iEQ7wo/CG0xlczd+2O/em" crossorigin="anonymous"></script>
+  </body>
+</html>
