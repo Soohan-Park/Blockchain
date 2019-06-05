@@ -6,7 +6,7 @@
 <br>
 자세한 사항은 첨부되어 있는 백서 및 발표 자료를 확인 바랍니다.
 <br>
-
+<br>
 > ./documents/Sumthink_Whitepaper.pdf
 >
 > ./documents/Sumthink_Presentation.pdf
