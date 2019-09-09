@@ -1,4 +1,4 @@
-# School Voting Contract
+# School Voting Contract v1.1.0
 
 
 
@@ -13,13 +13,17 @@
 <br>
 <br>
 **More updates (ASAP):**  
-> 1) 후보자 리스트 조회  
-> 2) 투표 가능자 추가 등록 (Only Admin.)
+> 1) 후보자 리스트 조회 보완.
+> 2) 투표 현황 실시간 조회 (최대 득표자 3명 or 전체)
 
 <br>
 <br>
 
 #### Ver. Log
 
+> v 1.1.0
+> 1. 후보자 리스트 조회
+> 2. 투표 가능자 추가 등록
+>
 > v 1.0.0  
 > School Voting Contract.
