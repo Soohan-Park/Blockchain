@@ -1,15 +1,20 @@
 pragma solidity ^0.5.1;
+// Experimental features are turned on. Do not use experimental features on live deployments.
+pragma experimental ABIEncoderV2;
 
 
 /*
-School Voting v1.0.0
+School Voting v1.1.0
+
+1. 후보자 리스트 조회
+2. 투표 가능자 추가 등록
 
 Created by : Soohan Park
 Created date : 2019-08-31
 
 More updates (ASAP):
-    1) 후보자 리스트 조회
-    2) 투표 가능자 추가 등록 (Only Admin.)
+    1) 후보자 리스트 조회 보완.
+    2) 투표 현황 실시간 조회 (최대 득표자 3명 or 전체)
 */
 
 
@@ -31,7 +36,7 @@ contract SchoolVoting {
         address admin;
     }
 
-    Candidate[] public cand;
+    Candidate[] cand; //public으로 설정해서 후보자가 누구누구 있는지를 확인할 수 있다
     mapping (address=>uint) public votes;
     Voter[] private voter; //익명성 보장을 위해
     settingsVote public thisVote;
@@ -76,6 +81,21 @@ contract SchoolVoting {
         }
     }
 
+
+    //후보자 리스트 조회 - by Addr. (v1.1.0)
+    //후보자 리스트를 튜플 형태로 반환받음. 현재 ABIEndocerV2 사용으로 실제 배포에는 적합하지 않음.
+    //이 함수를 만듬으로써, cand의 Public 속성 제거.
+    function lookCandidateList() public view returns (Candidate[] memory){
+        return cand;
+    }
+
+
+    //투표 가능자 추가 등록 (v1.1.0)
+    function addVoter(address _addr) public {
+        require(thisVote.admin == msg.sender, "Your are not admin.");
+        voter.push(Voter(false, _addr));
+    }
+    
 
     //투표자 유효성 검사
     function checkVoter(address _voter) private returns (bool) {
