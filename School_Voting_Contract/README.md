@@ -1,4 +1,4 @@
-# School Voting Contract v1.1.0
+# School Voting Contract v1.1.1
 
 
 
@@ -21,9 +21,12 @@
 
 #### Ver. Log
 
+> v 1.1.1
+> 1. structure settingVote의 uint => uint32 타입으로 변경(Gas 소모 줄이기 위해)  
+>  
 > v 1.1.0
 > 1. 후보자 리스트 조회
-> 2. 투표 가능자 추가 등록
->
+> 2. 투표 가능자 추가 등록  
+>  
 > v 1.0.0  
 > School Voting Contract.
