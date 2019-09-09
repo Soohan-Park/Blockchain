@@ -4,10 +4,11 @@ pragma experimental ABIEncoderV2;
 
 
 /*
-School Voting v1.1.0
+School Voting v1.1.1
 
 1. 후보자 리스트 조회
 2. 투표 가능자 추가 등록
+3. v1.1.1_settingVote의 uint => uint32 타입으로 변경(Gas 소모 줄이기 위해)
 
 Created by : Soohan Park
 Created date : 2019-08-31
@@ -31,8 +32,9 @@ contract SchoolVoting {
     }
 
     struct settingsVote {
-        uint startTime;
-        uint endTime;
+        //Gas 절약을 위해 uint32로 수정(struct 안에서만 가스 절약 효과가 있다고 함 v1.1.1)
+        uint32 startTime;
+        uint32 endTime;
         address admin;
     }
 
@@ -42,9 +44,9 @@ contract SchoolVoting {
     settingsVote public thisVote;
 
     // 7, ["0x14723a09acff6d2a60dcdf7aa4aff308fddc160c", "0x583031d1113ad414f02576bd6afabfb302140225"] 이와 같은 형식으로 입력!
-    constructor (uint endTime_days, address[] memory _voters) public {
-        thisVote.startTime = now;
-        thisVote.endTime = now + endTime_days * 1 days;
+    constructor (uint32 endTime_days, address[] memory _voters) public {
+        thisVote.startTime = uint32(now);
+        thisVote.endTime = uint32(now + endTime_days * 1 days);
         thisVote.admin = msg.sender;
 
         for (uint i = 0; i < _voters.length; i++) {
