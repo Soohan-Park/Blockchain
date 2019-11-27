@@ -4,7 +4,7 @@ import threading
 import time
 import requests
 
-from flask import Flask, redirect, render_template
+from flask import Flask, redirect, render_template, json
 
 
 chain = []
@@ -14,8 +14,6 @@ curr = None
 UUID = str(uuid.uuid4())
 app = Flask(__name__)
 
-# main을 쪼개서 라우트 시켜줘야함
-# 기존 main 내 멤버들은 if 문 안으로 이동, 전역은 그대로 전역 처리 (각 함수별로 전역 처리 되어있음)
 # if 내에서 멀티 쓰레드 처리? 라우트 처리하고 나중에 수동으로 처리?
 def main():
     global curr
@@ -29,48 +27,49 @@ def main():
     t.daemon = True
     t.start()
 
-    #app.debug = True
-    #디버그모드 활성화 시, "No module named main" 이라는 에러가 발생 -> 조치 필요.
+    # Run Web-App.
     app.run(0)
 
     ##### 수정 필요!!!!
     ##### 이 아래로는 나누기
-    while flag:
-        ins = input("inst >> ").strip().split()
-        inst = "NONE"
-        if ins != [] :  inst = ins[0].lower()
+    ##### _ins 는 반복문에서 사용되던 거라 없어도 됨!!
 
+    if inst in ("addtx", "add", "a"): # addTx RECEIVER MASSAGE
+        addTx(ins)
 
-        if inst in ("addtx", "add", "a"): # addTx RECEIVER MASSAGE
-            addTx(ins)
-        
-        elif inst in ("getblock", "block", "b"): # getBlock BLOCK_IDX
-            getBlock(ins)
+    elif inst in ("gettx", "tx"): # getTx BLOCK_IDX
+        getTx(ins)
+    
+    elif inst in ("getmsg", "getmessage"): # getMsg BLOCK_IDX
+        getMessage(ins)
 
-        elif inst in ("gettx", "tx"): # getTx BLOCK_IDX
-            getTx(ins)
-        
-        elif inst in ("getmsg", "getmessage"): # getMsg BLOCK_IDX
-            getMessage(ins)
-
-        elif inst in ("getchain", "c"):
-            getChain()
-        
-        elif inst == "exit":
-            flag = False
-
-        else:
-            print("Wrong Inst.")
+    
+    else:
+        print("Wrong Inst.")
 
     pass
 
 
 @app.route('/')
 def index():
-    return render_template('index.html')
+    global chain
+    try:
+        chainLength = len(chain)
+        lastGeneTime = chain[chainLength-1].getBlock()['timeStamp']
+    except IndexError as err:
+        time.sleep(5)
+        chainLength = len(chain)
+        lastGeneTime = chain[chainLength-1].getBlock()['timeStamp']
 
-        
-def addTx(_ins):
+    return render_template('index.html', chainLength=chainLength, lastGeneTime=lastGeneTime)
+
+
+@app.route('/addtx')
+def addTx():
+    return render_template('addtx.html')
+##### _ins 는 반복문에서 사용되던 거라 없어도 됨!!
+@app.route('/adding', methods=['POST'])
+def adding():
     global curr
 
     if len(_ins) == 2:
@@ -84,18 +83,22 @@ def addTx(_ins):
         curr.addTx(UUID)
 
 
-def getBlock(_ins):
-    global curr
+@app.route('/block/<i>')
+def getBlock(i):
+    global curr, chain
 
-    if len(_ins) == 2:
-        idx = int(_ins[1])
-        data = chain[idx].getBlock()
-        print(data)
-    else:
-        data = curr.getBlock()
-        print(data)
+    temp = chain[int(i)].getBlock()
+    
+    blockHash = temp['blockHash']
+    prevBlockHash = temp['prevBlockHash']
+    timeStamp = temp['timeStamp']
+    txs = [t.getTx() for t in temp['tx'] ] # Instance of Transaction. | The elements are typed Dict.
+    txsLength = len(txs)
+
+    return render_template("block_info.html", blockHash=blockHash, prevBlockHash=prevBlockHash, timeStamp=timeStamp, txs=txs, txsLength=txsLength)
 
 
+@app.route('/tx') # /tx/<tx or block#> 으로 수정할 것
 def getTx(_ins):
     global chain
 
@@ -109,6 +112,7 @@ def getTx(_ins):
         print("Need the Block's idx.")
 
 
+@app.route('/tx/msg')
 def getMessage(_ins):
     global chain
 
@@ -122,11 +126,24 @@ def getMessage(_ins):
         print("Need the Block's idx.")
 
 
+@app.route('/chain')
 def getChain():
     global chain
+    
+    chainLength = len(chain)
 
-    print("Chain Length :", len(chain))
-    print(chain)
+    j = []
+    for i in range(chainLength):
+        j.append(chain[i].getBlock())
+
+    return render_template('chain.html', j=j, chainLength=chainLength)
+
+
+@app.route('/search') # /search/<tx or block#> 으로 수정할 것
+def search():
+    # 입력된 검색어 판별 후(블록넘버인지 트랜잭션인지),
+    # 해당 검색 페이지로 redirect
+    return redirect()
 
 
 def close(_geneCycleTime):
@@ -141,10 +158,6 @@ def close(_geneCycleTime):
         
         curr = block.Block(lastBlockHash) # open new Block.
 
-
-@app.route('/search')
-def search():
-    return 'Not Yet.'
 
 if __name__ == '__main__':
     main()

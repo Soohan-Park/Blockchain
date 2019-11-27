@@ -1,4 +1,4 @@
-# [가칭] Selfmade Blockchain v0.1.0 (alpha)
+# [가칭] Selfmade Blockchain v0.1.1 (alpha)
 
 <br>
 
@@ -8,7 +8,7 @@ Python으로 구현한 블록체인.
 
 (추후 발전 방향에 맞춰 개발할 수 있도록 블록체인에 기본 구성을 구현중입니다)  
 
-<br><br>
+
 
 #### 개발 완료  
 
@@ -39,6 +39,7 @@ Python으로 구현한 블록체인.
 
 #### Version Log  
 (alpha)  
+2019-11-27 >> v0.1.1 - html 파일 추가 | main.py 수정
 2019-11-27 >> v0.1.0 - 멀티쓰레드를 통한 블록 생성 | 트랜잭션 추가 | 블록 및 트랜잭션 정보 가져오기  
 
 <br><br>
