@@ -11,15 +11,16 @@
   </head>
   <body>
     <center>
-      <!-- Search -->
-      <nav class="navbar navbar-expand navbar-light bg-faded">
+      <!-- NavBar -->
+      <nav class="navbar navbar-expand navbar-light bg-faded" style="background-color: rgb(52, 58, 64);">
           <img src="..\static\logo_image.png" class="img-thumbnail ${3|rounded-circle}" alt="Selfmade Blockchain">
           <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
             <li class="nav-item dropdown">
-              <a class="nav-link dropdown-toggle" href="#" id="dropdownId" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Dropdown</a>
+              <a class="nav-link dropdown-toggle" href="#" id="dropdownId" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="color: white;">Menu</a>
               <div class="dropdown-menu" aria-labelledby="dropdownId">
-                  <a class="dropdown-item" href="#">Action 1</a>
-                  <a class="dropdown-item" href="#">Action 2</a>
+                  <a class="dropdown-item active" style="background-color: rgb(52, 58, 64);" href="/">Home</a>
+                  <a class="dropdown-item" href="/chain">Full Chain</a>
+                  <a class="dropdown-item" href="/addtx">Add Tx</a>
               </div>
             </li>
           </ul>
@@ -27,7 +28,7 @@
           <form class="form-inline my-2 my-lg-0" action="/search" name="searchform" method="POST">
             <div>
               <input class="form-control mr-sm-2" type="text" placeholder="hash, block# ..." name="keyword">
-              <button class="btn btn-outline-dark my-2 my-sm-0" type="submit" onclick="search()">Go!</button>
+              <button class="btn btn-outline-light my-2 my-sm-0" type="submit" onclick="search()">Go!</button>
               <!-- <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> -->
             </div>
           </form>
@@ -40,7 +41,7 @@
         <hr class="my-2">
         <p>More info</p>
         <p class="lead">
-          <a class="btn btn-dark btn-lg" href="Jumbo action link" role="button">Jumbo action name</a>
+          <a class="btn btn-dark btn-lg" href="/addtx" role="button">Add Transaction Now!</a>
         </p>
       </div>
       <!--  -->
@@ -48,9 +49,9 @@
       <div>
         <nav class="nav nav-pills flex-column flex-sm-row">
           
-            <a class="flex-sm-fill text-sm-center nav-link active" style="background-color: rgb(52, 58, 64);" href="#">Active</a>
+            <a class="flex-sm-fill text-sm-center nav-link active" style="background-color: rgb(52, 58, 64);" href="/chain">Full Chain</a>
             <a class="flex-sm-fill text-sm-center nav-link " style="color: rgb(52, 58, 64);" href="#">Longer nav link</a>
-            <a class="flex-sm-fill text-sm-center nav-link active" style="background-color: rgb(52, 58, 64);" href="#">Link</a>
+            <a class="flex-sm-fill text-sm-center nav-link active" style="background-color: rgb(52, 58, 64);" href="/addtx">Add Tx</a>
             <!-- <a class="flex-sm-fill text-sm-center nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a> -->
           </nav>
       </div>
@@ -59,22 +60,14 @@
       <table class="table">
           <thead class="thead-dark">
             <tr>
-              <th scope="col">#</th>
-              <th scope="col">First</th>
+              <th scope="col">Chain Length</th>
+              <th scope="col">Last Gene. Time</th>
             </tr>
           </thead>
           <tbody>
             <tr>
-              <th scope="row">1</th>
-              <td>Mark</td>
-            </tr>
-            <tr>
-              <th scope="row">2</th>
-              <td>Jacob</td>
-            </tr>
-            <tr>
-              <th scope="row">3</th>
-              <td>Larry</td>
+              <th scope="row">{{chainLength}}</th>
+              <td>{{lastGeneTime}}</td>
             </tr>
           </tbody>
         </table>
