@@ -3,16 +3,17 @@ import uuid
 import threading
 import time
 import requests
-
-from flask import Flask, redirect, render_template, json
+import sha3 as sha
+from flask import Flask, redirect, render_template, json, request
 
 
 chain = []
 nodes = set() # 합의 과정을 위한 노드의 집합.
 curr = None
 
-UUID = str(uuid.uuid4())
+UUID = sha.keccak_256(str(uuid.uuid4()).encode('UTF-8')).hexdigest()
 app = Flask(__name__)
+
 
 # if 내에서 멀티 쓰레드 처리? 라우트 처리하고 나중에 수동으로 처리?
 def main():
@@ -34,19 +35,11 @@ def main():
     ##### 이 아래로는 나누기
     ##### _ins 는 반복문에서 사용되던 거라 없어도 됨!!
 
-    if inst in ("addtx", "add", "a"): # addTx RECEIVER MASSAGE
-        addTx(ins)
-
-    elif inst in ("gettx", "tx"): # getTx BLOCK_IDX
+    if inst in ("gettx", "tx"): # getTx BLOCK_IDX
         getTx(ins)
     
     elif inst in ("getmsg", "getmessage"): # getMsg BLOCK_IDX
         getMessage(ins)
-
-    
-    else:
-        print("Wrong Inst.")
-
     pass
 
 
@@ -66,21 +59,24 @@ def index():
 
 @app.route('/addtx')
 def addTx():
-    return render_template('addtx.html')
-##### _ins 는 반복문에서 사용되던 거라 없어도 됨!!
+    global chain, UUID
+
+    chainLength = len(chain)
+
+    return render_template('addtx.html', chainLength=chainLength, sender=UUID)
+
+
 @app.route('/adding', methods=['POST'])
 def adding():
-    global curr
+    global curr, UUID, chain
 
-    if len(_ins) == 2:
-        receiver = _ins[1]
-        curr.addTx(UUID, receiver)
-    elif len(_ins) == 3:
-        receiver = _ins[1]
-        data = _ins[2]
-        curr.addTx(UUID, receiver, data)
-    else:
-        curr.addTx(UUID)
+    sender = UUID
+    receiver = request.form['receiver']
+    message = request.form['message']
+
+    curr.addTx(_sender=sender, _receiver=receiver, _data=message)
+
+    return "<script>alert('Success'); location.href='/chain';</script>"
 
 
 @app.route('/block/<i>')
@@ -97,7 +93,7 @@ def getBlock(i):
 
     return render_template("block_info.html", blockHash=blockHash, prevBlockHash=prevBlockHash, timeStamp=timeStamp, txs=txs, txsLength=txsLength)
 
-
+##### _ins 는 반복문에서 사용되던 거라 없어도 됨!!
 @app.route('/tx') # /tx/<tx or block#> 으로 수정할 것
 def getTx(_ins):
     global chain
@@ -139,11 +135,16 @@ def getChain():
     return render_template('chain.html', j=j, chainLength=chainLength)
 
 
-@app.route('/search') # /search/<tx or block#> 으로 수정할 것
+@app.route('/search', methods=['POST']) # /search/<tx or block#> 으로 수정할 것
 def search():
     # 입력된 검색어 판별 후(블록넘버인지 트랜잭션인지),
     # 해당 검색 페이지로 redirect
-    return redirect()
+    # 데이터는 잘 넘어옴.
+    keyword = request.form['keyword']
+    if keyword == "":
+        return "<script>alert('Please Input the Keyword.'); history.back();</script>"
+    else:
+        return keyword
 
 
 def close(_geneCycleTime):
